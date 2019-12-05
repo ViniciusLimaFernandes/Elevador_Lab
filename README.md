@@ -1,2 +1,3 @@
 # Elevador_Lab
-Codigo do elevador fpga
+
+Codigo para funcionamento de um elevador em VHDL
