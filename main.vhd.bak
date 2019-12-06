@@ -62,7 +62,6 @@ BEGIN
 				--Quando o sensor do meio estiver ativo
 				WHEN "0110" => 
 					andar <= "01";
-				--Quando o sensor de baixo estiver ativo
 				WHEN "0001" =>
 					andar <= "00";
 			END CASE;
