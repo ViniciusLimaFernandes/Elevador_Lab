@@ -15,9 +15,11 @@ ENTITY elevador IS
 	PORT (
 		clk, reset : IN std_logic;
 		--seletor : IN std_logic_vector(3 DOWNTO 0);
-		sensores : IN std_logic_vector(3 DOWNTO 0);
+		--Switch para os sensores
+		SW : IN std_logic_vector(3 DOWNTO 0);
 		motor : OUT std_logic_vector(1 DOWNTO 0);
-		porta : OUT std_logic
+		--Porta
+		LEDG : OUT std_logic_vector(1 downto 0)
 	);
 END elevador;
 ARCHITECTURE controlador OF elevador IS
@@ -34,10 +36,11 @@ ARCHITECTURE controlador OF elevador IS
 	SIGNAL sensor_mid_down : std_logic_vector;
 	SIGNAL sensor_down : std_logic_vector;
 BEGIN
-	sensor_up <= sensor(3);
-	sensor_mid_up <= sensor(2);
-	sensor_mid_down <= sensor(1);
-	sensor_down <= sensor(0);	
+	sensor_up <= SW(3);
+	sensor_mid_up <= SW(2);
+	sensor_mid_down <= SW(1);
+	sensor_down <= SW(0);
+	porta <= LEDG(0);
 
 	PROCESS (clk, reset)
 	BEGIN
