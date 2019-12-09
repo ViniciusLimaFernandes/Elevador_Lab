@@ -5,6 +5,7 @@
 --quando o elevador estÃƒÂ¡ no estado PARADO.
 --motor : (00) - parado; (01) - para cima; (10) - para baixo.
 --porta : (1) - aberta; (0) - fechada.
+--testanto ps.:marcio
 LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
 USE ieee.std_logic_arith.ALL;
@@ -27,7 +28,7 @@ ARCHITECTURE controlador OF elevador IS
 	SIGNAL andar : std_logic_vector(1 DOWNTO 0) := "00";
 	SIGNAL seguinte : std_logic_vector(1 DOWNTO 0);
 
-	--Declaração de sensores
+	--Declaraï¿½ï¿½o de sensores
 	SIGNAL sensor_up : std_logic_vector;
 	SIGNAL sensor_mid_up : std_logic_vector;
 	SIGNAL sensor_mid_down : std_logic_vector;
