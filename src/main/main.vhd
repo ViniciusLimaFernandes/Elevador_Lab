@@ -17,9 +17,11 @@ ENTITY elevador IS
 		--seletor : IN std_logic_vector(3 DOWNTO 0);
 		--Switch para os sensores
 		SW : IN std_logic_vector(3 DOWNTO 0);
+		--Botoes para os andares
+		KEY : IN std_logic_vector(2 DOWNTO 0);
 		motor : OUT std_logic_vector(1 DOWNTO 0);
 		--Porta
-		LEDG : OUT std_logic_vector(1 downto 0)
+		LEDG : OUT std_logic_vector(0 downto 0)
 	);
 END elevador;
 ARCHITECTURE controlador OF elevador IS
@@ -28,7 +30,7 @@ ARCHITECTURE controlador OF elevador IS
 	SIGNAL prox : state;
 	SIGNAL enable : std_logic;
 	SIGNAL andar : std_logic_vector(1 DOWNTO 0) := "00";
-	SIGNAL seguinte : std_logic_vector(1 DOWNTO 0);
+	SIGNAL seguinte : std_logic_vector(1 DOWNTO 0);			--no lugar de seguinte por KEY e valor como '000' e deletar linha
 
 	--Declara��o de sensores
 	SIGNAL sensor_up : std_logic_vector;
