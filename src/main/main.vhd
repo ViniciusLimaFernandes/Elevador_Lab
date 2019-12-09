@@ -73,12 +73,14 @@ BEGIN
 	PROCESS (andar, seguinte)
 		BEGIN
 			CASE andar IS
+				--Elevador no primeiro andar
 				WHEN "00" => 
 					IF seguinte > "00" THEN
 						prox <= subindo;
 					ELSE
 						prox <= parado;
 					END IF;
+				--Elevador no segundo andar
 				WHEN "01" => 
 					IF seguinte = "00" THEN
 						prox <= descendo;
@@ -87,6 +89,7 @@ BEGIN
 					ELSE
 						prox <= parado;
 					END IF;
+				--Elevador no terceiro andar
 				WHEN "10" => 
 					IF seguinte = "00" OR seguinte = 
 				 "01" THEN
@@ -104,6 +107,7 @@ BEGIN
 							END IF;
 				END CASE;
 			END PROCESS;
+			
 			PROCESS (atual, andar)
 			BEGIN
 				CASE atual IS
