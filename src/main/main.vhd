@@ -30,7 +30,7 @@ ARCHITECTURE controlador OF elevador IS
 	SIGNAL prox : state;
 	SIGNAL enable : std_logic;
 	SIGNAL andar : std_logic_vector(1 DOWNTO 0) := "00";
-	SIGNAL seguinte : std_logic_vector(1 DOWNTO 0);			--no lugar de seguinte por KEY e valor como '000' e deletar linha
+	SIGNAL seguinte : std_logic_vector(1 DOWNTO 0);
 
 	--Declara��o de sensores
 	SIGNAL sensor_up : std_logic_vector;
@@ -43,6 +43,20 @@ BEGIN
 	sensor_mid_down <= SW(1);
 	sensor_down <= SW(0);
 	porta <= LEDG(0);
+
+	PROCESS(KEY, seguinte)
+	BEGIN
+
+		IF(KEY(0) = 1) THEN
+			seguinte <= "00"
+		END IF;
+		IF(KEY(1) = 1) THEN
+			seguinte <= "01"
+		END IF;
+		IF(KEY(2) = 1) THEN
+			seguinte <= "10"
+		END IF;
+	END PROCESS;	
 
 	PROCESS (clk, reset)
 	BEGIN
