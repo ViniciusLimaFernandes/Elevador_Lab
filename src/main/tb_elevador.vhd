@@ -8,16 +8,16 @@ USE ieee.std_logic_textio.ALL;
 USE std.textio.ALL;
 
 --  Entity Declaration - Testbench
-ENTITY tb_main IS
-END tb_main;
+ENTITY tb_elevador IS
+END tb_elevador;
 
 --  Architecture Body
-ARCHITECTURE arq OF tb_main IS
+ARCHITECTURE arq OF tb_elevador IS
 
  
  
  
-COMPONENT main
+COMPONENT elevador
     port(
       in1 : in std_logic;                                                                                                                               
       out1 : out std_logic;                                                                                                                                                   
@@ -38,7 +38,7 @@ end component;
 --------------------------------------------------------------------------------
 BEGIN
  
-inst_main : main
+inst_main : elevador
     Port map (      
       in1   => in1,
       out1   => out1,
