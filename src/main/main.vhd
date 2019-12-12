@@ -44,15 +44,18 @@ BEGIN
 	sensor_down <= SW(0);
 	porta <= LEDG(0);
 
+	--Logica dos botoes
 	PROCESS(KEY, seguinte)
 	BEGIN
-
+		--Selecao do primeiro andar
 		IF(KEY(0) = 1) THEN
 			seguinte <= "00"
 		END IF;
+		--Selecao do segundo andar
 		IF(KEY(1) = 1) THEN
 			seguinte <= "01"
 		END IF;
+		--Selecao do terceiro andar
 		IF(KEY(2) = 1) THEN
 			seguinte <= "10"
 		END IF;
