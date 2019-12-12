@@ -3,7 +3,6 @@
 --enable : quando inativo (0), desabilita o painel de controle, nao atendendo as chamadas
 --Torna - se ativo
 --quando o elevador esta¡ no estado PARADO.
---motor : (00) parado; (01) para cima; (10) para baixo.
 --andares: (00) primeiro andar; (01) segundo andar; (10) terceiro andar.
 --botoes: (00) primeiro andar; (01) segundo andar; (10) terceiro andar.
 --porta : (1) aberta; (0) fechada.
@@ -20,11 +19,12 @@ ENTITY elevador IS
 		SW : IN std_logic_vector(3 DOWNTO 0);
 		--Botoes para os andares
 		KEY : IN std_logic_vector(2 DOWNTO 0);
-		motor : OUT std_logic_vector(1 DOWNTO 0);
+		--Motor
+		LEDR : OUT std_logic_vector(2 DOWNTO 0);
 		--Porta
 		LEDG : OUT std_logic_vector(0 downto 0);
 		--Display 7 segmentos
-		segmentos: OUT BIT_VECTOR(6 DOWNTO 0))
+		segmentos: OUT BIT_VECTOR(6 DOWNTO 0)
 	);
 END elevador;
 
@@ -41,6 +41,7 @@ ARCHITECTURE controlador OF elevador IS
 	SIGNAL sensor_mid_up : std_logic_vector;
 	SIGNAL sensor_mid_down : std_logic_vector;
 	SIGNAL sensor_down : std_logic_vector;
+	SIGNAL motor : std_logic_vector;
 
 	BEGIN
 		sensor_up <= SW(3);
@@ -48,6 +49,10 @@ ARCHITECTURE controlador OF elevador IS
 		sensor_mid_down <= SW(1);
 		sensor_down <= SW(0);
 		porta <= LEDG(0);
+		motorS <= LEDR(2);	--Motor subindo
+		motorP <= LEDR(1);	--Motor descendo
+		motorD <= LEDR(0);	--Motor parado
+
 	
 	PROCESS (clk, reset)
 		BEGIN
@@ -150,15 +155,21 @@ ARCHITECTURE controlador OF elevador IS
 				CASE atual IS
 					WHEN parado => 
 						porta <= '1';
-						motor <= "00";
+						motorS <= '0';
+						motorP <= '1';
+						motorD <= '0';
 						enable <= '1';
 					WHEN subindo => 
 						porta <= '0';
-						motor <= "01";
+						motorS <= '1';
+						motorP <= '0';
+						motorD <= '0';
 						enable <= '0';
 					WHEN descendo => 
 						porta <= '0';
-						motor <= "10";
+						motorS <= '0';
+						motorP <= '0';
+						motorD <= '1';
 						enable <= '0';
 				END CASE;
 			END PROCESS;
