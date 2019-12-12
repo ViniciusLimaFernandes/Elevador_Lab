@@ -16,7 +16,7 @@ ENTITY elevador IS
 	PORT (
 		clk, reset : IN std_logic;
 		--Switch para os sensores
-		SW : IN std_logic_vector(3 DOWNTO 0);
+		SW : IN std_logic_vector(17 DOWNTO 0);
 		--Botoes para os andares
 		KEY : IN std_logic_vector(2 DOWNTO 0);
 		--Motor
@@ -48,6 +48,7 @@ ARCHITECTURE controlador OF elevador IS
 		sensor_mid_up <= SW(2);
 		sensor_mid_down <= SW(1);
 		sensor_down <= SW(0);
+		enable <= SW(17);
 		porta <= LEDG(0);
 		motorS <= LEDR(2);	--Motor subindo
 		motorP <= LEDR(1);	--Motor descendo
