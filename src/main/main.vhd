@@ -1,8 +1,8 @@
 --Codigo VHDL de um controlador de elevador de tres andares.
---reset : faz com que o elevador retorne ao tÃ©rreo.
---enable : quando inativo (0), desabilita o painel de controle, nÃ£o atendendo Ã s chamadas
+--reset : faz com que o elevador retorne ao terreo.
+--enable : quando inativo (0), desabilita o painel de controle, nao atendendo as chamadas
 --Torna - se ativo
---quando o elevador estÃ¡ no estado PARADO.
+--quando o elevador esta¡ no estado PARADO.
 --motor : (00) parado; (01) para cima; (10) para baixo.
 --andares: (00) primeiro andar; (01) segundo andar; (10) terceiro andar.
 --botoes: (00) primeiro andar; (01) segundo andar; (10) terceiro andar.
@@ -33,7 +33,7 @@ ARCHITECTURE controlador OF elevador IS
 	SIGNAL andar : std_logic_vector(1 DOWNTO 0) := "00";
 	SIGNAL seguinte : std_logic_vector(1 DOWNTO 0);
 
-	--Declara��o de sensores
+	--Declaracao de sensores
 	SIGNAL sensor_up : std_logic_vector;
 	SIGNAL sensor_mid_up : std_logic_vector;
 	SIGNAL sensor_mid_down : std_logic_vector;
@@ -44,6 +44,20 @@ BEGIN
 	sensor_mid_down <= SW(1);
 	sensor_down <= SW(0);
 	porta <= LEDG(0);
+	
+	PROCESS (clk, reset)
+	BEGIN
+		IF (reset = '1') THEN
+			atual <= parado;
+		ELSIF (clk'EVENT AND clk = '1') THEN
+			atual <= prox;
+			IF (prox = subindo AND andar /= "11") THEN
+				andar <= andar + 1;
+			ELSIF (prox = descendo AND andar /= "00") THEN
+				andar <= andar - 1;
+			END IF;
+		END IF;
+	END PROCESS;
 
 	--Logica dos botoes
 	PROCESS(KEY, seguinte)
@@ -59,20 +73,6 @@ BEGIN
 		--Selecao do terceiro andar
 		IF(KEY(2) = 1) THEN
 			seguinte <= "10"
-		END IF;
-	END PROCESS;	
-
-	PROCESS (clk, reset)
-	BEGIN
-		IF (reset = '1') THEN
-			atual <= parado;
-		ELSIF (clk'EVENT AND clk = '1') THEN
-			atual <= prox;
-			IF (prox = subindo AND andar /= "11") THEN
-				andar <= andar + 1;
-			ELSIF (prox = descendo AND andar /= "00") THEN
-				andar <= andar - 1;
-			END IF;
 		END IF;
 	END PROCESS;
 	
