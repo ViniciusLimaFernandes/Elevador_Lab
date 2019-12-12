@@ -24,7 +24,7 @@ ENTITY elevador IS
 		--Porta
 		LEDG : OUT std_logic_vector(0 downto 0);
 		--Display 7 segmentos
-		segmentos: OUT BIT_VECTOR(6 DOWNTO 0)
+		HEX0: OUT std_logic_vector(6 DOWNTO 0)
 	);
 END elevador;
 
@@ -70,13 +70,13 @@ ARCHITECTURE controlador OF elevador IS
 	END PROCESS;
 
 	--Display 7 segmentos
-	PROCESS (andar, segmentos)
+	PROCESS (andar, HEX0)
 		BEGIN
 			WHEN andar SELECT
-				segmentos <= "0110000" WHEN "00",
-							 "1101101" WHEN "01",
-							 "1111001" WHEN "10",
-							 "0000000" WHEN "11";
+				HEX0 <= "0110000" WHEN "00",
+						"1101101" WHEN "01",
+						"1111001" WHEN "10",
+						"0000000" WHEN "11";
 	END PROCESS;
 
 	--Logica dos botoes
