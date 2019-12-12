@@ -90,9 +90,9 @@ BEGIN
 				WHEN "0001" =>
 					andar <= "00";
 			END CASE;
-	END PROCESS;				
-				
+	END PROCESS;			
 
+	--Logica para definir o proximo andar
 	PROCESS (andar, seguinte)
 		BEGIN
 			CASE andar IS
@@ -114,23 +114,23 @@ BEGIN
 					END IF;
 				--Elevador no terceiro andar
 				WHEN "10" => 
-					IF seguinte = "00" OR seguinte = 
-				 "01" THEN
+					IF seguinte = "00" OR seguinte = "01" THEN
 						prox <= descendo;
-				ELSIF (seguinte = "10") THEN
-					prox <= parado;
-				ELSE
-					prox <= subindo;
+					ELSIF (seguinte = "10") THEN
+						prox <= parado;
+					ELSE
+						prox <= subindo;
 				END IF;
 				WHEN "11" => 
-							IF seguinte < "11" THEN
-								prox <= descendo;
-							ELSE
-								prox <= parado;
-							END IF;
+					IF seguinte < "11" THEN
+						prox <= descendo;
+					ELSE
+						prox <= parado;
+					END IF;
 				END CASE;
 			END PROCESS;
 			
+			--Movimentos dos elevador
 			PROCESS (atual, andar)
 			BEGIN
 				CASE atual IS
