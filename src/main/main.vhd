@@ -22,9 +22,12 @@ ENTITY elevador IS
 		KEY : IN std_logic_vector(2 DOWNTO 0);
 		motor : OUT std_logic_vector(1 DOWNTO 0);
 		--Porta
-		LEDG : OUT std_logic_vector(0 downto 0)
+		LEDG : OUT std_logic_vector(0 downto 0);
+		--Display 7 segmentos
+		segmentos: OUT BIT_VECTOR(6 DOWNTO 0))
 	);
 END elevador;
+
 ARCHITECTURE controlador OF elevador IS
 	TYPE state IS (parado, subindo, descendo);
 	SIGNAL atual : state := parado;
@@ -38,25 +41,36 @@ ARCHITECTURE controlador OF elevador IS
 	SIGNAL sensor_mid_up : std_logic_vector;
 	SIGNAL sensor_mid_down : std_logic_vector;
 	SIGNAL sensor_down : std_logic_vector;
-BEGIN
-	sensor_up <= SW(3);
-	sensor_mid_up <= SW(2);
-	sensor_mid_down <= SW(1);
-	sensor_down <= SW(0);
-	porta <= LEDG(0);
+
+	BEGIN
+		sensor_up <= SW(3);
+		sensor_mid_up <= SW(2);
+		sensor_mid_down <= SW(1);
+		sensor_down <= SW(0);
+		porta <= LEDG(0);
 	
 	PROCESS (clk, reset)
-	BEGIN
-		IF (reset = '1') THEN
-			atual <= parado;
-		ELSIF (clk'EVENT AND clk = '1') THEN
-			atual <= prox;
+		BEGIN
+			IF (reset = '1') THEN
+				atual <= parado;
+			ELSIF (clk'EVENT AND clk = '1') THEN
+				atual <= prox;
 			IF (prox = subindo AND andar /= "11") THEN
 				andar <= andar + 1;
 			ELSIF (prox = descendo AND andar /= "00") THEN
 				andar <= andar - 1;
 			END IF;
 		END IF;
+	END PROCESS;
+
+	--Display 7 segmentos
+	PROCESS (andar, segmentos)
+		BEGIN
+			WHEN andar SELECT
+				segmentos <= "0110000" WHEN "00",
+							 "1101101" WHEN "01",
+							 "1111001" WHEN "10",
+							 "0000000" WHEN "11";
 	END PROCESS;
 
 	--Logica dos botoes
