@@ -1,11 +1,13 @@
---CÃ³digo VHDL de um controlador de elevador de trÃªs andares.
+--Codigo VHDL de um controlador de elevador de tres andares.
 --reset : faz com que o elevador retorne ao tÃ©rreo.
 --enable : quando inativo (0), desabilita o painel de controle, nÃ£o atendendo Ã s chamadas
 --Torna - se ativo
 --quando o elevador estÃ¡ no estado PARADO.
---motor : (00) - parado; (01) - para cima; (10) - para baixo.
---porta : (1) - aberta; (0) - fechada.
---testanto ps.:marcio
+--motor : (00) parado; (01) para cima; (10) para baixo.
+--andares: (00) primeiro andar; (01) segundo andar; (10) terceiro andar.
+--botoes: (00) primeiro andar; (01) segundo andar; (10) terceiro andar.
+--porta : (1) aberta; (0) fechada.
+
 LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
 USE ieee.std_logic_arith.ALL;
@@ -14,7 +16,6 @@ USE ieee.numeric_std.ALL;
 ENTITY elevador IS
 	PORT (
 		clk, reset : IN std_logic;
-		--seletor : IN std_logic_vector(3 DOWNTO 0);
 		--Switch para os sensores
 		SW : IN std_logic_vector(3 DOWNTO 0);
 		--Botoes para os andares
@@ -147,10 +148,4 @@ BEGIN
 						enable <= '0';
 				END CASE;
 			END PROCESS;
-			PROCESS (enable, seletor)
-				BEGIN
-					IF (enable = '1') THEN
-						seguinte <= seletor;
-					END IF;
-				END PROCESS;
 END controlador;
