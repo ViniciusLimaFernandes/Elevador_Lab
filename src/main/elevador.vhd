@@ -59,6 +59,7 @@ ARCHITECTURE controlador OF elevador IS
 		LEDR(1) <= motorP; --Motor descendo
 		LEDR(0) <= motorD; --Motor parado
 		clk <= sw(16);
+		atual <= prox;
 
 	
 --	PROCESS (clk, reset)
@@ -95,12 +96,6 @@ ARCHITECTURE controlador OF elevador IS
 			END IF;
 		END IF;
 		
-	END PROCESS;
-	
-	PROCESS()
-		BEGIN
-			if(andar )
-			
 	END PROCESS;
 	
 	--Logica de operacao com os sensores
