@@ -21,7 +21,7 @@ ENTITY elevador IS
 		--Botoes para os andares
 		KEY : IN std_logic_vector(2 DOWNTO 0);
 		--Motor
-		LEDR : OUT std_logic_vector(2 DOWNTO 0);
+		LEDR : OUT std_logic_vector(17 DOWNTO 0);
 		--Porta
 		LEDG : OUT std_logic_vector(0 downto 0)
 	);
@@ -106,11 +106,20 @@ ARCHITECTURE controlador OF elevador IS
 					--Quando o sensor de cima estiver ativo
 					WHEN "1000" =>
 						andar <= "100";
+						LEDR(15) <= '1';
+						LEDR(16) <= '0';
+						LEDR(17) <= '0';
 					--Quando o sensor do meio estiver ativo
 					WHEN "0110" => 
 						andar <= "010";
+						LEDR(15) <= '0';
+						LEDR(16) <= '1';
+						LEDR(17) <= '0';
 					--Quando o sensor de baixo estiver ativo
 					WHEN "0001" =>
+						LEDR(15) <= '1';
+						LEDR(16) <= '0';
+						LEDR(17) <= '0';
 						andar <= "001";
 					when others =>
 						andar <= "000";
