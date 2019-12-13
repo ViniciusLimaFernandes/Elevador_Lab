@@ -54,10 +54,11 @@ ARCHITECTURE controlador OF elevador IS
 --		sensor_down <= SW(0);
 		sensores <= SW(3 DOWNTO 0);
 		enable <= SW(17);
+		LEDR(2 DOWNTO 0) <= andar;
 		LEDG(0) <= porta;
-		LEDR(2) <= motorS;	--Motor subindo
-		LEDR(1) <= motorP; --Motor descendo
-		LEDR(0) <= motorD; --Motor parado
+		LEDR(17) <= motorS;	--Motor subindo
+		LEDR(16) <= motorP; --Motor descendo
+		LEDR(15) <= motorD; --Motor parado
 		clk <= sw(16);
 		atual <= prox;
 
@@ -106,20 +107,11 @@ ARCHITECTURE controlador OF elevador IS
 					--Quando o sensor de cima estiver ativo
 					WHEN "1000" =>
 						andar <= "100";
-						LEDR(15) <= '1';
-						LEDR(16) <= '0';
-						LEDR(17) <= '0';
 					--Quando o sensor do meio estiver ativo
 					WHEN "0110" => 
 						andar <= "010";
-						LEDR(15) <= '0';
-						LEDR(16) <= '1';
-						LEDR(17) <= '0';
 					--Quando o sensor de baixo estiver ativo
 					WHEN "0001" =>
-						LEDR(15) <= '1';
-						LEDR(16) <= '0';
-						LEDR(17) <= '0';
 						andar <= "001";
 					when others =>
 						andar <= "000";
