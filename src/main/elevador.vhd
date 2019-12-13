@@ -33,7 +33,7 @@ ARCHITECTURE controlador OF elevador IS
 	SIGNAL prox : state;
 	SIGNAL enable : std_logic;
 	SIGNAL clk : std_logic;
-	SIGNAL andar : std_logic_vector(1 DOWNTO 0) := "00";
+	SIGNAL andar : std_logic_vector(2 DOWNTO 0) := "000";
 	SIGNAL seguinte : std_logic_vector(1 DOWNTO 0);
 	SIGNAL sensores : std_logic_vector(3 DOWNTO 0);
 
@@ -105,15 +105,15 @@ ARCHITECTURE controlador OF elevador IS
 				CASE sensores IS	
 					--Quando o sensor de cima estiver ativo
 					WHEN "1000" =>
-						andar <= "10";
+						andar <= "100";
 					--Quando o sensor do meio estiver ativo
 					WHEN "0110" => 
-						andar <= "01";
+						andar <= "010";
 					--Quando o sensor de baixo estiver ativo
 					WHEN "0001" =>
-						andar <= "00";
+						andar <= "001";
 					when others =>
-						andar <= "00";
+						andar <= "000";
 				END CASE;
 			END IF;
 	END PROCESS;			
@@ -124,14 +124,14 @@ ARCHITECTURE controlador OF elevador IS
 			if rising_edge (clk) then
 				CASE andar IS
 					--Elevador no primeiro andar
-					WHEN "00" => 
+					WHEN "000" => 
 						IF seguinte > "00" THEN
 							prox <= subindo;
 						ELSE
 							prox <= parado;
 						END IF;
 					--Elevador no segundo andar
-					WHEN "01" => 
+					WHEN "010" => 
 						IF seguinte = "00" THEN
 							prox <= descendo;
 						ELSIF (seguinte > "01") THEN
@@ -140,7 +140,7 @@ ARCHITECTURE controlador OF elevador IS
 							prox <= parado;
 						END IF;
 					--Elevador no terceiro andar
-					WHEN "10" => 
+					WHEN "100" => 
 						IF seguinte = "00" OR seguinte = "01" THEN
 							prox <= descendo;
 						ELSIF (seguinte = "10") THEN
@@ -148,12 +148,14 @@ ARCHITECTURE controlador OF elevador IS
 						ELSE
 							prox <= subindo;
 					END IF;
-					WHEN "11" => 
+					WHEN "111" => 
 						IF seguinte < "11" THEN
 							prox <= descendo;
 						ELSE
 							prox <= parado;
 						END IF;
+					when others =>
+						prox <= parado;
 					END CASE;
 				END IF;
 			END PROCESS;
