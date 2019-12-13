@@ -1,81 +1,54 @@
+library ieee;
+use ieee.std_logic_1164.all;
 
--- Libraries
-LIBRARY ieee;
-USE ieee.numeric_std.ALL;
-USE ieee.std_logic_1164.ALL;
-USE ieee.std_logic_unsigned.ALL;
-USE ieee.std_logic_textio.ALL;
-USE std.textio.ALL;
+entity tb_elevador is
+end tb_elevador;
 
---  Entity Declaration - Testbench
-ENTITY tb_elevador IS
-END tb_elevador;
+architecture tb of tb_elevador is
 
---  Architecture Body
-ARCHITECTURE arq OF tb_elevador IS
+    component elevador
+        port (SW   : in std_logic_vector (17 downto 0);
+              KEY  : in std_logic_vector (2 downto 0);
+              LEDR : out std_logic_vector (17 downto 0);
+              LEDG : out std_logic_vector (0 downto 0));
+    end component;
 
- 
- 
- 
-COMPONENT elevador
-    port(
-      in1 : in std_logic;                                                                                                                               
-      out1 : out std_logic;                                                                                                                                                   
-      clk : in std_logic                                                                                                                                                           
-    );        
-end component; 
+    signal SW   : std_logic_vector (17 downto 0);
+    signal KEY  : std_logic_vector (2 downto 0);
+    signal LEDR : std_logic_vector (17 downto 0);
+    signal LEDG : std_logic_vector (0 downto 0);
 
- 
+    constant TbPeriod : time := 1000 ns; 
+    signal TbClock : std_logic := '0';
+    signal TbSimEnded : std_logic := '0';
 
- -- signals
- signal in1           : std_logic := '0';
- signal out1          : std_logic := '0';
- signal clk           : std_logic := '0'; 
- signal bitvector     : std_logic_vector(15 downto 0) := (others => '0');
- 
---------------------------------------------------------------------------------
--- TestBench Architecture
---------------------------------------------------------------------------------
-BEGIN
- 
-inst_main : elevador
-    Port map (      
-      in1   => in1,
-      out1   => out1,
-      clk   => clk
-    );             
+begin
+
+    dut : elevador
+    port map (SW   => SW,
+              KEY  => KEY,
+              LEDR => LEDR,
+              LEDG => LEDG);
+
+    -- Gerador de clock
+    TbClock <= not TbClock after TbPeriod/2 when TbSimEnded /= '1' else '0';
 
 
-ClockGenProc:
- PROCESS
-  BEGIN
-   clk <= '0';
-   WAIT FOR 10ns;
-   clk <= '1';
-   WAIT FOR 10ns;
- END PROCESS;
- 
-BitGenProc:
- PROCESS
-  BEGIN
-    bitvector <= "0101010010110101";
-    for i in 0 to bitvector'length-1 loop
-      in1 <= bitvector(i);
-      wait until rising_edge(clk); 
-    end loop;
-    wait;    
- END PROCESS;
-  
+    stimuli : process
+    begin
+        SW <= (others => '0');
+        KEY <= (others => '0');
 
+        wait for 100 * TbPeriod;
 
+        -- Para o clock quando terminar a simulação
+        TbSimEnded <= '1';
+        wait;
+    end process;
 
-END arq;
--- End of file
+end tb;
 
-
-
-
-
-
-
-
+configuration cfg_tb_elevador of tb_elevador is
+    for tb
+    end for;
+end cfg_tb_elevador;
